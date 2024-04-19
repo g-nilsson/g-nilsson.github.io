@@ -1,1 +1,354 @@
-"index" 
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      .blog-post {
+        width: 50%; /* Adjust as needed */
+        margin: 0 auto; /* Center the blog post */
+      }
+      .iframe-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 40px 0px; /* Adjust spacing between text and iframe */
+      }
+      .iframe-container iframe {
+        max-width: 100%;
+        width: 100%;
+        height: 750px;
+        max-height: 100%; /* Adjust iframe height as needed */
+      }
+      .center {
+        display: block;
+        margin: 40px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+        /* border: solid black 1px; */
+      }
+      /* Styling for h1 title */
+      h1 {
+        font-size: 2.5em;
+        /* color: #333; */
+        color: #ffcc01;
+        margin: 80px 0px;
+        text-align: center;
+      }
+
+      /* Styling for h2 headings */
+      h2 {
+        font-size: 1.8em;
+        color: #444;
+        margin: 30px 0px;
+      }
+
+      /* Styling for paragraphs */
+      p {
+        font-size: 1.1em;
+        line-height: 1.6;
+        color: #666;
+        margin-bottom: 20px;
+      }
+
+      /* Styling for links */
+      a {
+        color: #007bff; /* Change link color as per your preference */
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+        border-radius: 8px; /* Optional: adds rounded corners to images */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="blog-post">
+      <h1>Quantum Circuit Models: A Primer</h1>
+      <h2>What are Quantum Circuits?</h2>
+      <p>
+        A quantum circuit is a network of wires, where we imagine qubits
+        traveling around and going through different quantum gates. To
+        understand what this actually looks like, it will be much easier to
+        first understand probabilistic circuits
+      </p>
+      <h2>Probabilistic Circuits</h2>
+      <p>
+        If you've ever drawn a <i>probability</i> tree, you've also drawn a
+        probabilistic circuit!
+      </p>
+      <img
+        src="Assets/probability_tree.gif"
+        style="float: right; width: 350px; margin: 40px"
+      />
+      <p>
+        For example, if you have a biased coin colored blue and red, landing on
+        blue \(60\%\) of the time, and red \(40\%\) of the time. We can describe
+        the process of flipping this coin twice using the probability tree to
+        the right.<br />
+      </p>
+      <p>
+        We can see how the probability mass progresses through the tree
+        (highlighted in green), by multiplying probability mass with the weight
+        of each edge it passes over. <br />
+      </p>
+      <p>
+        Let's say we're going to consider it a "win" if we flip different colors
+        in our consecutive tosses. We can then get the overall probability of
+        "winning" by adding up all the final probability masses that correspond
+        to our win scenario, so in this case \(0.24+0.24 = 0.48\).<br />
+      </p>
+      <p>Let's show you a circuit that models a coin flip!<br /></p>
+
+      <img src="Assets/prob_hadamard.gif" width="350px" class="center" />
+      <p>
+        In the gif above, we see a setup that has two inputs and two outputs,
+        much like how logic gates take in inputs and outputs on circuits As you
+        might see, this specific gate gives out \(50\%\) to the top and \(50\%\)
+        to the bottom, regardless of the input. This coin-flipping gate actually
+        has a name: the Hadamard Gate!
+      </p>
+      <p>
+        Now, I want you to imagine placing two of these in a row so that the
+        outputs of the first one map into the input of the next. Stop and
+        consider what the output of the second gate should be...
+      </p>
+      <br />
+      <p>
+        After some thinking, it feels natural that the output of the second
+        Hadamard gate will also be \(50/50\), since every Hadamard gate outputs
+        \(50/50\), regardless of input. We could also come to the same
+        conclusion by following the possible paths, and adding up the
+        probabilities of each path:
+      </p>
+
+      <img src="Assets/two_hadamard_prob.png" width="800px" class="center" />
+
+      <p>
+        The picture above shows that if you start at the top input, you have a
+        \(50\%\) chance to end up at the top output, which makes sense!<br />
+      </p>
+      <p>
+        Now, we're ready to see how all of this will work when we use quantum
+        circuits instead, things are about to get weird.
+      </p>
+
+      <h2>Quantum Circuits</h2>
+      <p>
+        A quantum circuit, is just like a probabilistic circuit, except that the
+        edge weights may be complex numbers. Okay, now what does that mean?<br />
+      </p>
+      <p>Let's remake the Hadamard Gate but in the quantum world.</p>
+      <img src="Assets/quantum_hadamard.gif" width="800px" class="center" />
+      <p>
+        So far, not much has changed. We're still letting our probability values
+        traverse the network, multiplying with the weight of each edge as we go.
+        Actually, we should call our probability values "probability amplitudes"
+        now, because they can be complex or even negative, and they don't need
+        to add up to \(1\) anymore. This doesn't make sense for normal
+        probabilities. In the very end, we do a special operation \(|x|^2\) on
+        our probability amplitudes to get rid of negatives and complex values,
+        the result is our unnormalized probability. In the example above, we see
+        that the final unnormalized probabilities are equal to each other, which
+        is the same result we got in our Hadamard gate before, a \(50/50\)
+        outcome if we started at the top input!<br />
+      </p>
+      <p>
+        Also, notice that I've labeled the top input with a \(0\) and the bottom
+        one with a \(1\), we can now treat them as bits of input where we either
+        input a \(1\) or a \(0\). In the probabilistic world, we start at a
+        single point, with the entire probability mass, letting it spread out to
+        the different possible outcomes. <br />
+      </p>
+      <p>
+        In the quantum world, we input a qubit and get out a qubit! In the gif
+        above, it looks like we have two different inputs and two different
+        outputs, but really we're inputting a single qubit (that happens to have
+        a \(100\%\) probability to collapse to a \(0\) if we were to observe
+        it), and outputting a single qubit (that now has a \(50\%\) chance to
+        collapse to a \(0\), and a \(50\%\) chance to collapse to a \(1\), if we
+        observe it). We've put our single qubit into a
+        <b>superposition</b>!<br />
+      </p>
+      <br />
+      <p>
+        Now let's think, if I connect two of these quantum Hadamard gates in
+        series such that the probability amplitudes (the values before we do
+        \(|x|^2\)) of \(0\) and \(1\), respectively, get inputted into the
+        second Hadamard gate. If I plug in a qubit that is \(100\%\) at \(0\),
+        what qubit will I get at the very end?
+      </p>
+      <img
+        src="Assets/hadamard_gates_series.png"
+        width="1000px"
+        class="center"
+      />
+      <p>
+        Here is when things get funky. We can get the overall probability
+        amplitude of a single path by multiplying all the weights of the edges,
+        and then performing our operation \(|x|^2\).
+        <br />
+      </p>
+      <p>
+        If we look at the top path, we have \(i/2 \times i/2 = -1/4\), which, if
+        we plug into our operation we get \(|-1/4|^2=1/16\).<br />
+      </p>
+      <p>
+        If we look at the path that goes from 0, then down in the middle, and
+        then up to \(0\) again, we have \(1/2 \times 1/2\) = \(1/4\), which, if
+        we plug into our operation we get \(|1/4|^2=1/16\). There's a \(1/16\)
+        probability amplitude associated with each path individually.<br />
+      </p>
+      <p>
+        So overall, there are two different valid paths with non-zero
+        probabilities. But if we want to calculate the total unnormalized
+        probability of going from \(0\) to \(0\) we need to sum the paths'
+        probability amplitudes first and then do \(|x|^2\).
+      </p>
+      <img
+        src="Assets/quantum_interference.png"
+        width="1000px"
+        class="center"
+      />
+      <p>
+        How absurd! There are two different paths, which each have a non-zero
+        probability amplitude, but if we take both into consideration they
+        cancel each other out!<br />
+      </p>
+      <p>
+        This is <b>quantum interference</b>, just like how waves can interfere
+        with each other and cancel out, so can our probability amplitudes.<br />
+      </p>
+      <p>
+        You can try this out in this quantum circuit simulation from
+        <a href="https://thequantumlaend.de/">https://thequantumlaend.de/</a>
+        built by the University of Stuttgart.
+        <br />
+        Remove all but \(1\) of the qubits, then set the system up like the
+        pictures below and observe how the histogram on the bottom changes.
+      </p>
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          flex: 1;
+          justify-content: space-between;
+        "
+      >
+        <img src="Assets/step1.png" />
+        <img src="Assets/step2.png" />
+        <img src="Assets/step3.png" />
+      </div>
+
+      <div class="iframe-container">
+        <iframe src="https://designer.thequantumlaend.de/"></iframe>
+      </div>
+
+      <h2>Benefits (over classical models)</h2>
+      <p>
+        The question now is, what benefits do these quantum circuit models
+        provide? More specifically, why is there so much hype for the use and
+        achievability of quantum circuit models? What’s wrong with our classical
+        models of computation?
+      </p>
+      <p>
+        In terms of computability, there is actually no difference between the
+        functionality of quantum computation models and those of classical
+        models, as any problems that can be solved with quantum models can also
+        be solved with classical computation models given enough time.
+      </p>
+      <p>
+        The key phrase, however, is “given enough time.” Many computational
+        problems that exist in the world today, even though they are
+        theoretically solvable by our classical models of computation, are very
+        complicated, making them practically impossible to solve. These problems
+        (known generally as \(NP\) problems) require so much time to complete
+        that they do not make sense to even attempt!
+      </p>
+      <p>
+        This is where quantum circuit models can come into play. These models
+        use the principles of quantum mechanics to solve these complicated
+        problems with exponentially fewer computational steps than the
+        best-known non-quantum algorithms, providing the potential for
+        exponential time complexity improvements over classical models! This
+        capability, known as “quantum supremacy” is a result of the principles
+        of quantum superposition and entanglement, which would, in theory, allow
+        quantum computers to explore multiple computational paths
+        simultaneously, a property that classical computational models have not
+        been able to exhibit. This opens up the potential for tackling
+        computationally intensive tasks that were previously infeasible within
+        reasonable time frames.
+      </p>
+
+      <h2>Examples</h2>
+      <p>
+        While the concept of quantum supremacy is still under question, there
+        has been some progress in quantum algorithms that provide some
+        significant time benefits over classical models. One common algorithm is
+        Shor’s algorithm, which is used for integer factorization. The
+        best-known classical algorithm for solving this problem requires
+        super-polynomial time. However, with the quantum benefits of Shor’s
+        algorithm, this can be completed in polynomial time, representing a
+        significant time reduction from classical algorithms.
+      </p>
+      <p>
+        Another example of this is Grover’s algorithm, for finding marked
+        elements in an unstructured database. For a database with N elements, a
+        linear search would normally take \(O(N)\) time (an order of \(N\)
+        evaluations, for each element in the database) to find marked elements.
+        Grover’s algorithm requires just \(O(\sqrt{N})\) time, providing a
+        quadratic speedup for the problem, especially for larger database sizes.
+      </p>
+      <p>
+        These quantum algorithms, as well as the overall current level of
+        progress made in quantum computing research, show the compelling
+        potential to revolutionize the field of computational theory.
+      </p>
+
+      <h2>P = NP?</h2>
+      <p>
+        The discussion of time complexities brings us to the ongoing \(P = NP\)
+        debate. The debate questions whether the set of \(P\) problems -
+        problems that can be solved in polynomial time; relatively quickly - is
+        equal to the set of \(NP\) problems - problems that can be verified in
+        polynomial time, but can take longer (possibly exponentially longer)
+        time to solve. In other words, can all those tough \(NP\) problems be
+        cracked just as quickly as the relatively easier \(P\) problems?
+      </p>
+      <p>
+        How is the field of quantum computation relevant to this debate? Quantum
+        computing doesn't give us a straightforward answer, but it does shake
+        things up. While classical computers might struggle with \(NP\)
+        problems, quantum computers could potentially zip through them (thanks
+        to their unique abilities of superposition and entanglement!).
+      </p>
+    </div>
+  </body>
+</html>
